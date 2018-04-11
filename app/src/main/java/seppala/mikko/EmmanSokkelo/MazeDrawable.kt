@@ -2,6 +2,8 @@ package seppala.mikko.EmmanSokkelo
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.hardware.camera2.params.BlackLevelPattern
+import android.util.Log
 
 class MazeDrawable(private val maze: Maze, private val heroDrawable: Drawable, private val goalDrawable: Drawable) : Drawable() {
 
@@ -31,8 +33,18 @@ class MazeDrawable(private val maze: Maze, private val heroDrawable: Drawable, p
                 }
                 else if(maze[x,y].type == MazeCell.Type.GOAL)
                 {
-                    goalDrawable.bounds = drawArea
+
+                    canvas.save()
+
+                    canvas.translate(drawArea.exactCenterX(), drawArea.exactCenterY())
+                    canvas.scale(0.8f, 0.8f)
+                    canvas.clipRect(-cellSize/2,-cellSize/2,cellSize/2,cellSize/2)
+                    goalDrawable.bounds = canvas.clipBounds
+
+                    canvas.rotate(20.0f)
                     goalDrawable.draw(canvas)
+                    
+                    canvas.restore()
                 }
 
                 drawArea.top += cellSize

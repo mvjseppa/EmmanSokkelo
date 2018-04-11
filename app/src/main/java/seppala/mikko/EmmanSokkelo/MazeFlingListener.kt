@@ -1,5 +1,6 @@
 package seppala.mikko.EmmanSokkelo
 
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent

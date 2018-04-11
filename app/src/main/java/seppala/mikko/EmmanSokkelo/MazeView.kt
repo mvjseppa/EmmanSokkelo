@@ -3,13 +3,14 @@ package seppala.mikko.EmmanSokkelo
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.media.MediaPlayer
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 
-class MazeView : View
+class MazeView : View, HeroEventListener
 {
     constructor(ctx: Context) : super(ctx)
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
@@ -20,9 +21,13 @@ class MazeView : View
     private val mazeDrawable = MazeDrawable(maze, heroDrawable, goalDrawable)
     private val paint = Paint()
     private val mazeFlingListener = MazeFlingListener(maze)
-    private var gDetector = GestureDetector(context, mazeFlingListener)
+    private var gestureDetector = GestureDetector(context, mazeFlingListener)
 
-    init { paint.setARGB(255, 255, 0, 0) }
+    init
+    {
+        maze.hero.registerListener(this)
+        paint.setARGB(255, 255, 0, 0)
+    }
 
     override fun onDraw(canvas: Canvas?) {
         if(canvas == null) return
@@ -34,9 +39,19 @@ class MazeView : View
 
     override fun onTouchEvent(event: MotionEvent?): Boolean
     {
-        val ret = gDetector!!.onTouchEvent(event)
+        val ret = gestureDetector.onTouchEvent(event)
+
+
+
         this.postInvalidate()
         return ret
+    }
+
+    override fun onGoalEvent()
+    {
+        val mp = MediaPlayer.create(context, R.raw.jeejee)
+        mp.seekTo(800)
+        mp.start()
     }
 
 }
