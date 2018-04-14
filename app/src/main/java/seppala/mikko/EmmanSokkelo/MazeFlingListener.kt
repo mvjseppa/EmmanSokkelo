@@ -1,6 +1,5 @@
 package seppala.mikko.EmmanSokkelo
 
-import android.media.MediaPlayer
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -8,7 +7,8 @@ import java.lang.Math.abs
 
 class MazeFlingListener(private val maze: Maze) : GestureDetector.SimpleOnGestureListener()
 {
-    override fun onDown(event: MotionEvent): Boolean {
+    override fun onDown(event: MotionEvent): Boolean
+    {
         return true
     }
 
@@ -16,7 +16,7 @@ class MazeFlingListener(private val maze: Maze) : GestureDetector.SimpleOnGestur
                          velocityY: Float): Boolean
     {
 
-        var dir = if(abs(velocityX) > abs(velocityY))
+        val dir = if(abs(velocityX) > abs(velocityY))
         {
             if(velocityX < 0) Direction.WEST else Direction.EAST
         }

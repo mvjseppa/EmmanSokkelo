@@ -16,7 +16,7 @@ class MazeView : View, HeroEventListener
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
 
     private val heroDrawable = ContextCompat.getDrawable(context, R.drawable.hero_500px)
-    private val goalDrawable = ContextCompat.getDrawable(context, R.drawable.diamond_480px)
+    private val goalDrawable = ContextCompat.getDrawable(context, R.drawable.flower_door_500px)
     private val maze = RandomizedPrimMazeGenerator().generate(Size(10,15))
     private val mazeDrawable = MazeDrawable(maze, heroDrawable, goalDrawable)
     private val paint = Paint()
@@ -29,29 +29,28 @@ class MazeView : View, HeroEventListener
         paint.setARGB(255, 255, 0, 0)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas?)
+    {
         if(canvas == null) return
         mazeDrawable.setBounds(0,0, width, height)
         mazeDrawable.draw(canvas)
         super.onDraw(canvas)
     }
 
-
     override fun onTouchEvent(event: MotionEvent?): Boolean
     {
         val ret = gestureDetector.onTouchEvent(event)
-
-
 
         this.postInvalidate()
         return ret
     }
 
-    override fun onGoalEvent()
+    override fun onHeroMove(oldCell:MazeCell, newCell: MazeCell)
     {
-        val mp = MediaPlayer.create(context, R.raw.jeejee)
-        mp.seekTo(800)
-        mp.start()
+        if(newCell.type == MazeCell.Type.GOAL) {
+            val mp = MediaPlayer.create(context, R.raw.jeejee)
+            mp.seekTo(900)
+            mp.start()
+        }
     }
-
 }

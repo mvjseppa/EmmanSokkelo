@@ -2,5 +2,5 @@ package seppala.mikko.EmmanSokkelo
 
 interface HeroEventListener
 {
-    fun onGoalEvent()
+    fun onHeroMove(oldCell: MazeCell, newCell: MazeCell)
 }

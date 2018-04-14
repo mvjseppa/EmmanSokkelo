@@ -2,18 +2,28 @@ package seppala.mikko.EmmanSokkelo
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.hardware.camera2.params.BlackLevelPattern
-import android.util.Log
 
 class MazeDrawable(private val maze: Maze, private val heroDrawable: Drawable, private val goalDrawable: Drawable) : Drawable() {
 
     private val wallThickness = 10
-    private val cellSize = 100
-    private val paint = Paint()
-    init { paint.setARGB(255, 0, 0, 0) }
+    private val cellSize = 150
+    private val wallPaint = Paint()
+    private val floorPaint = Paint()
+    init
+    {
+        wallPaint.setARGB(255, 0, 0, 0)
+        floorPaint.setARGB(255, 100, 100, 250)
+    }
 
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas)
+    {
+        canvas.save()
+
+        val newX = -cellSize * (maze.hero.coordinates.x + 0.5f) + canvas.width * 0.5f
+        val newY = -cellSize * (maze.hero.coordinates.y + 0.5f) + canvas.height * 0.5f
+
+        canvas.translate(newX, newY)
 
         val drawArea = Rect(0,0,cellSize,cellSize)
 
@@ -37,11 +47,11 @@ class MazeDrawable(private val maze: Maze, private val heroDrawable: Drawable, p
                     canvas.save()
 
                     canvas.translate(drawArea.exactCenterX(), drawArea.exactCenterY())
-                    canvas.scale(0.8f, 0.8f)
+                    canvas.scale(1.2f, 1.2f)
                     canvas.clipRect(-cellSize/2,-cellSize/2,cellSize/2,cellSize/2)
                     goalDrawable.bounds = canvas.clipBounds
 
-                    canvas.rotate(20.0f)
+                    canvas.rotate(0.0f)
                     goalDrawable.draw(canvas)
                     
                     canvas.restore()
@@ -55,10 +65,16 @@ class MazeDrawable(private val maze: Maze, private val heroDrawable: Drawable, p
             drawArea.right += cellSize
         }
 
+        canvas.restore()
+
     }
 
     private fun drawCell(cell: MazeCell, canvas: Canvas, area: Rect)
     {
+        if(!maze.hero.getCellsSeen().contains(cell)) return
+
+        canvas.drawRect(area, floorPaint)
+
         for(wall in cell.getWalls())
         {
             val wallRect = Rect(area)
@@ -71,7 +87,7 @@ class MazeDrawable(private val maze: Maze, private val heroDrawable: Drawable, p
                 Direction.EAST  -> wallRect.left    = wallRect.right + wallThickness
             }
 
-            canvas.drawRect(wallRect, paint)
+            canvas.drawRect(wallRect, wallPaint)
         }
     }
 

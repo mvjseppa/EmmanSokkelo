@@ -1,8 +1,20 @@
 package seppala.mikko.EmmanSokkelo
 
-class Hero(var cell: MazeCell, var coordinates: Point = Point(0,0))
+import kotlin.properties.Delegates
+
+class Hero(startCell: MazeCell, var coordinates: Point = Point(0,0))
 {
     private var listeners = emptyList<HeroEventListener>()
+
+    var cell: MazeCell by Delegates.observable(startCell)
+    {
+        _, oldCell, newCell ->
+        listeners.forEach{it.onHeroMove(oldCell, newCell)}
+    }
+
+    private var cellsSeen = mutableSetOf(cell)
+
+    init{updateCellsSeen()}
 
     fun registerListener(listener: HeroEventListener)
     {
@@ -11,13 +23,27 @@ class Hero(var cell: MazeCell, var coordinates: Point = Point(0,0))
 
     fun move(direction: Direction)
     {
-        cell = cell[direction] ?: cell
-        coordinates += direction
+        if(cell[direction] != null)
+        {
+            cell = cell[direction] ?: cell
+            coordinates += direction
+            updateCellsSeen()
+        }
+    }
 
-        if(cell.type == MazeCell.Type.GOAL)
-            for(listener in listeners)
-                listener.onGoalEvent()
+    fun getCellsSeen() = cellsSeen
 
+    fun updateCellsSeen()
+    {
+        Direction.values().forEach {
+            var seen = cell
+            while(seen[it] != null)
+            {
+                seen = seen[it]!!
+                if(!cellsSeen.contains(seen)) cellsSeen.add(seen)
+            }
+
+        }
     }
 }
 

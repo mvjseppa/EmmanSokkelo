@@ -41,7 +41,7 @@ class RandomizedPrimMazeGenerator
         val maze = Maze(size)
 
         //2. Pick a cell, mark it as part of the maze. Add the walls of the cell to the wall list.
-        var cellToAdd = maze[0,0]
+        val cellToAdd = maze[0,0]
         var lastAdded = cellToAdd
         visited.add(cellToAdd)
         addToWalls(cellToAdd, maze)
@@ -51,6 +51,9 @@ class RandomizedPrimMazeGenerator
 
         //4. set goal to last added cell
         lastAdded.type=MazeCell.Type.GOAL
+
+        maze.hero.updateCellsSeen()
+
         return maze
     }
 
