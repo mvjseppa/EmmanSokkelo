@@ -19,7 +19,7 @@ class MazeView : View, HeroEventListener
         private val heroDrawable = ContextCompat.getDrawable(context, R.drawable.hero_500px)
         private val goalDrawable = ContextCompat.getDrawable(context, R.drawable.flower_door_500px)
 
-        var maze = RandomizedPrimMazeGenerator().generate(Size(10,15))
+        private var maze = RandomizedPrimMazeGenerator().generate(Size(10,15))
         val mazeDrawable = MazeDrawable(maze, heroDrawable, goalDrawable)
         var gestureDetector = GestureDetector(context, MazeFlingListener(maze))
 
@@ -39,14 +39,13 @@ class MazeView : View, HeroEventListener
 
     override fun onTouchEvent(event: MotionEvent?): Boolean
     {
-        val ret = handler.gestureDetector.onTouchEvent(event)
-
-        this.postInvalidate()
-        return ret
+        return handler.gestureDetector.onTouchEvent(event)
     }
 
     override fun onHeroMove(oldCell:MazeCell, newCell: MazeCell)
     {
+        this.postInvalidate()
+
         if(newCell.type == MazeCell.Type.GOAL) {
             val mp = MediaPlayer.create(context, R.raw.jeejee)
             mp.seekTo(900)
