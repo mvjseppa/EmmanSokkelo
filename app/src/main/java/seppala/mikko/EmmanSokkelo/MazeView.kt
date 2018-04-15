@@ -2,7 +2,6 @@ package seppala.mikko.EmmanSokkelo
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
 import android.media.MediaPlayer
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
@@ -15,31 +14,32 @@ class MazeView : View, HeroEventListener
     constructor(ctx: Context) : super(ctx)
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
 
-    private val heroDrawable = ContextCompat.getDrawable(context, R.drawable.hero_500px)
-    private val goalDrawable = ContextCompat.getDrawable(context, R.drawable.flower_door_500px)
-    private val maze = RandomizedPrimMazeGenerator().generate(Size(10,15))
-    private val mazeDrawable = MazeDrawable(maze, heroDrawable, goalDrawable)
-    private val paint = Paint()
-    private val mazeFlingListener = MazeFlingListener(maze)
-    private var gestureDetector = GestureDetector(context, mazeFlingListener)
-
-    init
+    inner class MazeViewHandler
     {
-        maze.hero.registerListener(this)
-        paint.setARGB(255, 255, 0, 0)
+        private val heroDrawable = ContextCompat.getDrawable(context, R.drawable.hero_500px)
+        private val goalDrawable = ContextCompat.getDrawable(context, R.drawable.flower_door_500px)
+
+        var maze = RandomizedPrimMazeGenerator().generate(Size(10,15))
+        val mazeDrawable = MazeDrawable(maze, heroDrawable, goalDrawable)
+        var gestureDetector = GestureDetector(context, MazeFlingListener(maze))
+
+        init { maze.hero.registerListener(this@MazeView) }
     }
+
+    private var handler = MazeViewHandler()
+
 
     override fun onDraw(canvas: Canvas?)
     {
         if(canvas == null) return
-        mazeDrawable.setBounds(0,0, width, height)
-        mazeDrawable.draw(canvas)
+        handler.mazeDrawable.setBounds(0,0, width, height)
+        handler.mazeDrawable.draw(canvas)
         super.onDraw(canvas)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean
     {
-        val ret = gestureDetector.onTouchEvent(event)
+        val ret = handler.gestureDetector.onTouchEvent(event)
 
         this.postInvalidate()
         return ret
@@ -51,6 +51,8 @@ class MazeView : View, HeroEventListener
             val mp = MediaPlayer.create(context, R.raw.jeejee)
             mp.seekTo(900)
             mp.start()
+
+            handler = MazeViewHandler()
         }
     }
 }
