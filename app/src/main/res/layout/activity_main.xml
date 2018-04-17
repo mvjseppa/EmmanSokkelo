@@ -17,14 +17,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100px"
-        android:layout_height="100px"
-        android:background="@android:color/background_light"
-        android:src="@drawable/hero_500px" />
-    -->
-
     <seppala.mikko.EmmanSokkelo.MazeView
         android:id="@+id/mazeView"
         android:layout_width="match_parent"
