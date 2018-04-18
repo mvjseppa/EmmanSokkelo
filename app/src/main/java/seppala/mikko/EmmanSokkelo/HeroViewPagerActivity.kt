@@ -6,23 +6,30 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewPager
 import android.support.v4.app.FragmentStatePagerAdapter
-
+import android.widget.Button
 
 
 class HeroViewPagerActivity : FragmentActivity()
 {
 
     private lateinit var pager : ViewPager
+    private lateinit var acceptButton : Button
     private val pagerAdapter = HeroPagerAdapter(supportFragmentManager)
     private val fragments = arrayOf(HeroFragment(), HeroFragment(), HeroFragment())
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hero_view_pager)
+
         pager = findViewById(R.id.pager)
         pager.adapter = pagerAdapter
+
+        acceptButton = findViewById(R.id.hero_select_button)
+        acceptButton.setOnClickListener({_ ->  setContentView(R.layout.activity_main)})
     }
 
     override fun onBackPressed()
