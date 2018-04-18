@@ -1,6 +1,8 @@
 package seppala.mikko.EmmanSokkelo
 
+import android.app.PendingIntent.getActivity
 import android.content.Context
+import android.content.Intent.getIntent
 import android.graphics.Canvas
 import android.media.MediaPlayer
 import android.support.v4.content.ContextCompat
@@ -14,20 +16,28 @@ class MazeView : View, HeroEventListener
     constructor(ctx: Context) : super(ctx)
     constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
 
+    private var heroDrawableId: Int = R.drawable.hero_500px
+
     inner class MazeViewHandler
     {
-        private val heroDrawable = ContextCompat.getDrawable(context, R.drawable.hero_500px)
+        private val heroDrawable = ContextCompat.getDrawable(context, heroDrawableId)
         private val goalDrawable = ContextCompat.getDrawable(context, R.drawable.flower_door_500px)
 
         private var maze = RandomizedPrimMazeGenerator().generate(Size(10,15))
         val mazeDrawable = MazeDrawable(maze, heroDrawable, goalDrawable)
         var gestureDetector = GestureDetector(context, MazeFlingListener(maze))
 
-        init { maze.hero.registerListener(this@MazeView) }
+        init {
+            maze.hero.registerListener(this@MazeView) }
     }
 
     private var handler = MazeViewHandler()
 
+    fun updateHeroDrawable(drawableId: Int)
+    {
+        heroDrawableId = drawableId
+        handler = MazeViewHandler()
+    }
 
     override fun onDraw(canvas: Canvas?)
     {

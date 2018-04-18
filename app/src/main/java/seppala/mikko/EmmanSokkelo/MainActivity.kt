@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mazeView.updateHeroDrawable(intent.getIntExtra("heroDrawableId", R.drawable.hero_500px))
         mazeView.postInvalidate()
     }
-
 }
