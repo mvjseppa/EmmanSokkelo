@@ -26,7 +26,8 @@ class HeroViewPagerActivity : FragmentActivity()
         setContentView(R.layout.activity_hero_view_pager)
 
         fragments += createFragment("Prinsessa", R.drawable.hero_500px)
-        fragments += createFragment("Tonttu", R.drawable.tonttu_500px)
+        fragments += createFragment("Tonttutyttö", R.drawable.tonttu_500px)
+        fragments += createFragment("Tavallinen ihminen", R.drawable.normal_person_500px)
 
         pager = findViewById(R.id.pager)
         pager.adapter = pagerAdapter
