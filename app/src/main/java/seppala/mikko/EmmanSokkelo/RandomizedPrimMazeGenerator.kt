@@ -12,7 +12,7 @@ class RandomizedPrimMazeGenerator
     private val visited = ArrayList<MazeCell>()
     private val rndGen = Random(System.currentTimeMillis())
 
-    private fun <E> List<E>.random(random: java.util.Random): E? = if (size > 0) get(random.nextInt(size)) else null
+    private fun<E> List<E>.random(random: java.util.Random): E? = if (size > 0) get(random.nextInt(size)) else null
 
     class Wall(val cell1: MazeCell, val cell2: MazeCell, private val dir: Direction)
     {
@@ -25,7 +25,7 @@ class RandomizedPrimMazeGenerator
         {
             try
             {
-                val wall = Wall(cell, maze.getCursorNeighbour(dir), dir)
+                val wall = Wall(cell, maze.getCellNeighbour(cell, dir), dir)
                 if(!walls.contains(wall)) walls.add(wall)
             }
             catch (e: ArrayIndexOutOfBoundsException) { }
@@ -75,7 +75,6 @@ class RandomizedPrimMazeGenerator
             //1. Make the wall a passage and mark the unvisited cell as part of the maze.
             wall.connect()
             visited.add(cellToAdd)
-            maze.setCursor(cellToAdd)
 
             //2. Add the neighboring walls of the cell to the wall list.
             addToWalls(cellToAdd, maze)

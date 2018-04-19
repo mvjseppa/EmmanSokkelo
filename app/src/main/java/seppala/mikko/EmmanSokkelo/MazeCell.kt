@@ -8,6 +8,8 @@ class MazeCell(var type: MazeCell.Type)
     enum class Type{START, GOAL, NORMAL}
 
     private var neighbours: Array<MazeCell?> = arrayOf(null,null,null,null)
+    var coordinates = Point(0,0)
+
 
     operator fun get(dir: Direction): MazeCell?
     {

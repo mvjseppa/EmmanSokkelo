@@ -5,7 +5,6 @@ package seppala.mikko.EmmanSokkelo
  */
 class Maze(val size: Size)
 {
-    private var cursor = Point(0,0)
     private var goalSet = false
 
     private var grid = Array(size.height)
@@ -34,31 +33,15 @@ class Maze(val size: Size)
     operator fun get(x: Int, y: Int): MazeCell = grid[y][x]
     operator fun get(p: Point) = get(p.x, p.y)
 
-    fun setCursor(p: Point) { cursor = p }
-    fun moveCursor(dir: Direction){ cursor += dir }
-    fun getCursorCell() = this[cursor]
-    fun getCursorNeighbour(dir: Direction) = this[cursor+dir]
-
-    fun setCursor(c: MazeCell)
+    fun getCoordinatesOf(c: MazeCell) : Point
     {
-        for(x in 0 until size.width) for(y in 0 until size.height)
-        {
-            val testPoint = Point(x,y)
-            if(this[testPoint] === c)
-            {
-                cursor = testPoint
-            }
-        }
+        val y = grid.indexOfFirst { it.contains(c) }
+        val x = grid[y].indexOfFirst{it === c}
+
+        return Point(x,y)
     }
 
-    fun moveCursorAndConnect(dir: Direction)
-    {
-        val cell1 = this[cursor]
-        cursor += dir
-        val cell2 = this[cursor]
-
-        cell1[dir] = cell2
-    }
+    fun getCellNeighbour(c: MazeCell, dir: Direction) : MazeCell = this[getCoordinatesOf(c) + dir]
 
     override fun toString(): String
     {
