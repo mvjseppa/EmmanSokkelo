@@ -1,8 +1,6 @@
 package seppala.mikko.EmmanSokkelo
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
-import android.content.Intent.getIntent
 import android.graphics.Canvas
 import android.media.MediaPlayer
 import android.support.v4.content.ContextCompat
@@ -23,7 +21,7 @@ class MazeView : View, HeroEventListener
         private val heroDrawable = ContextCompat.getDrawable(context, heroDrawableId)
         private val goalDrawable = ContextCompat.getDrawable(context, R.drawable.flower_door_500px)
 
-        private var maze = RandomizedPrimMazeGenerator().generate(Size(10,15))
+        private var maze = MazeGeneratorRandomizedPrim().generate(Size(10,15))
         val mazeDrawable = MazeDrawable(maze, heroDrawable, goalDrawable)
         var gestureDetector = GestureDetector(context, MazeFlingListener(maze))
 

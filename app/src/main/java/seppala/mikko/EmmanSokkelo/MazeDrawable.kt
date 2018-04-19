@@ -75,7 +75,7 @@ class MazeDrawable(private val maze: Maze, private val heroDrawable: Drawable, p
 
         canvas.drawRect(area, floorPaint)
 
-        for(wall in cell.getWalls())
+        for(wall in cell.getWallDirections())
         {
             val wallRect = Rect(area)
 

@@ -14,7 +14,7 @@ class MazeUnitTests {
     @Test
     fun maze_randPrimGeneration()
     {
-        val g = RandomizedPrimMazeGenerator()
+        val g = MazeGeneratorRandomizedPrim()
         val m = g.generate(Size(40, 20))
         print(m.toString())
 

@@ -30,6 +30,6 @@ class MazeCell(var type: MazeCell.Type)
         }
     }
 
-    fun getWalls() = Direction.values().filter { this[it] == null }.toList()
+    fun getWallDirections() = Direction.values().filter { this[it] == null }.toList()
 
 }
